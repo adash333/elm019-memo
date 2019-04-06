@@ -1,7 +1,7 @@
 module Main exposing (Model, Msg(..), init, main, update, view)
 
 import Browser
-import Html exposing (Html, br, button, div, h1, img, input, li, text, ul)
+import Html exposing (Html, br, button, div, h1, img, input, li, section, table, td, text, tr, ul)
 import Html.Attributes exposing (class, disabled, placeholder, src, value)
 import Html.Events exposing (onInput, onSubmit)
 
@@ -55,29 +55,34 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    div [ class "section" ]
-        [ h1 [] [ text "Elm Memo" ]
-        , img [ src "/logo.svg" ] []
-        , br [] []
-        , div [ class "columns is-mobile" ]
-            [ div [ class "column is-half is-offset-one-quarter" ]
-                [ div [ class "field" ]
-                    [ div [ class "control" ]
-                        [ Html.form [ onSubmit Submit ]
-                            [ input [ class "input is-primary", placeholder "memo", value model.input, onInput Input ] [] ]
+    section [ class "section" ]
+        [ div [ class "container" ]
+            [ h1 [] [ text "Elm Memo" ]
+            , img [ src "/logo.svg" ] []
+            , br [] []
+            , div [ class "columns is-mobile is-centered" ]
+                [ div [ class "column is-three-quarters-mobile is-half-tablet " ]
+                    [ div [ class "field" ]
+                        [ div [ class "control" ]
+                            [ Html.form [ onSubmit Submit ]
+                                [ input [ class "input is-primary", placeholder "memo", value model.input, onInput Input ] [] ]
+                            ]
                         ]
                     ]
                 ]
+                        , div [ class "card" ]
+                [ div [ class "card-content" ]
+                    [ table [ class "table is-striped is-fullwidth" ]
+                        (List.map viewMemo model.memos)
+                    ]
+                ]
             ]
-        , button [ class "button", disabled (String.length model.input < 1) ] [ text "Submit" ]
-        , br [] []
-        , ul [] (List.map viewMemo model.memos)
         ]
 
 
 viewMemo : String -> Html Msg
 viewMemo memo =
-    li [] [ text memo ]
+    tr [] [ td [] [ text memo ] ]
 
 
 
